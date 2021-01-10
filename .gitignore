@@ -1,0 +1,9 @@
+.idea
+
+.env
+
+# Docker
+docker/logs/*/*
+docker/data/*
+
+!**index.php

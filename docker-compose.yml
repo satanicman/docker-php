@@ -1,0 +1,73 @@
+version: '3'
+
+services:
+    apache:
+        container_name: ${PROJECT_NAME}_apache
+        build: ./docker/apache
+        volumes:
+            - ./app:${PHP_APP_DIR}
+            - ./docker/logs/apache:${APACHE_ROOT_DIR}/logs
+        ports:
+            - 80:80
+        networks:
+            public_net:
+                ipv4_address: ${APACHE_IP}
+        environment:
+            APACHE_EXPOSED_PORT: ${APACHE_EXPOSED_PORT}
+            APACHE_ROOT_DIR: ${APACHE_ROOT_DIR}
+            PHP_IP: ${PHP_IP}
+            PHP_APP_DIR: ${PHP_APP_DIR}
+    mysql:
+        container_name: ${PROJECT_NAME}_mysql
+        image: mariadb:10.1.37
+        volumes:
+            - ./docker/logs/mysql:${MYSQL_LOG_DIR}
+            - ./docker/data:${MYSQL_DATA_DIR}
+        ports:
+            - 3306:3306
+        networks:
+            public_net:
+                ipv4_address: ${MYSQL_IP}
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DB_NAME}
+    php:
+        container_name: ${PROJECT_NAME}_php
+        build:
+            context: ./docker/php
+            args:
+                WEB_USER: ${WEB_USER}
+                WEB_GROUP: ${WEB_GROUP}
+                PHP_ROOT_DIR: ${PHP_ROOT_DIR}
+        ports:
+            - 9000:9000
+        working_dir: ${PHP_APP_DIR}
+        volumes:
+            - ./app:${PHP_APP_DIR}
+            - ./docker/logs/php:${PHP_ROOT_DIR}/logs
+        depends_on:
+            - apache
+            - mysql
+        networks:
+            public_net:
+                ipv4_address: ${PHP_IP}
+        environment:
+            XDEBUG_MODE: debug
+            XDEBUG_SESSION: ${PROJECT_NAME}
+            XDEBUG_CONFIG: "client_host=${HOST_IP}"
+            PHP_ROOT_DIR: ${PHP_ROOT_DIR}
+            APACHE_IP: ${APACHE_IP}
+            WEB_USER: ${WEB_USER}
+            WEB_GROUP: ${WEB_GROUP}
+            MYSQL_IP: ${MYSQL_IP}
+            MYSQL_ROOT_USER: ${MYSQL_ROOT_USER}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DB_NAME}
+
+networks:
+    public_net:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: ${NETWORK_SUBNET}
