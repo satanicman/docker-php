@@ -1,4 +1,4 @@
-FROM php:fpm
+FROM php:7-fpm
 
 ARG WEB_USER
 ARG WEB_GROUP
@@ -16,7 +16,7 @@ apt-get install -y git libonig-dev libwebp-dev libjpeg62-turbo-dev libpng-dev li
 apt-get clean && \
 rm -rf /var/lib/apt/list/*
 
-RUN mkdir -p /usr/src/php/ext/xdebug && curl -fsSL https://pecl.php.net/get/xdebug | tar xvz -C "/usr/src/php/ext/xdebug" --strip 1
+RUN mkdir -p /usr/src/php/ext/xdebug && curl -fsSL https://pecl.php.net/get/xdebug-2.9.8 | tar xvz -C "/usr/src/php/ext/xdebug" --strip 1
 
 RUN \
 docker-php-ext-configure pdo_mysql && \
@@ -28,8 +28,13 @@ docker-php-ext-configure exif && \
 docker-php-ext-configure gmp && \
 docker-php-ext-configure bcmath && \
 docker-php-ext-configure intl && \
-docker-php-ext-install xdebug pdo_mysql mbstring sockets gd opcache exif gmp bcmath intl && \
-docker-php-ext-enable xdebug
+docker-php-ext-install xdebug pdo_mysql mbstring sockets gd opcache exif gmp bcmath intl
+
+RUN \
+echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
+&& echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
+&& echo "xdebug.remote_handler=dbgp" >> /usr/local/etc/php/conf.d/xdebug.ini \
+&& echo "xdebug.remote_autostart=1" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 RUN \
 mkdir -p ${HOME}/php-default-conf && \

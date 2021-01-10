@@ -52,9 +52,7 @@ services:
             public_net:
                 ipv4_address: ${PHP_IP}
         environment:
-            XDEBUG_MODE: debug
-            XDEBUG_SESSION: ${PROJECT_NAME}
-            XDEBUG_CONFIG: "client_host=${HOST_IP}"
+            XDEBUG_CONFIG: "idekey=${PROJECT_NAME} remote_host=${HOST_IP} remote_port=9001"
             PHP_ROOT_DIR: ${PHP_ROOT_DIR}
             APACHE_IP: ${APACHE_IP}
             WEB_USER: ${WEB_USER}
