@@ -28,8 +28,7 @@ docker-php-ext-configure exif && \
 docker-php-ext-configure gmp && \
 docker-php-ext-configure bcmath && \
 docker-php-ext-configure intl && \
-docker-php-ext-install xdebug pdo_mysql mbstring sockets gd opcache exif gmp bcmath intl && \
-docker-php-ext-enable xdebug
+docker-php-ext-install xdebug pdo_mysql mbstring sockets gd opcache exif gmp bcmath intl
 
 RUN \
 mkdir -p ${HOME}/php-default-conf && \
