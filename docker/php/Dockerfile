@@ -16,6 +16,8 @@ apt-get install -y git libonig-dev libwebp-dev libjpeg62-turbo-dev libpng-dev li
 apt-get clean && \
 rm -rf /var/lib/apt/list/*
 
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 RUN mkdir -p /usr/src/php/ext/xdebug && curl -fsSL https://pecl.php.net/get/xdebug-2.9.8 | tar xvz -C "/usr/src/php/ext/xdebug" --strip 1
 
 RUN \
