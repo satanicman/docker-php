@@ -11,7 +11,7 @@ RUN usermod -u 1000 ${WEB_USER} \
  && chgrp -R staff ${PHP_ROOT_DIR}/php-fpm.d/www.conf
 
 RUN \
-apt-get update && \
+apt-get update \
 && apt-get install -y \
     git \
     libonig-dev \
