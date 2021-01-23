@@ -13,18 +13,18 @@ RUN usermod -u 1000 ${WEB_USER} \
 RUN \
 apt-get update && \
 && apt-get install -y \
-        git \
-        libonig-dev \
-        libwebp-dev \
-        libzip-dev \
-        libjpeg62-turbo-dev \
-        libpng-dev \
-        libfreetype6-dev \
-        libmcrypt-dev \
-        libssl-dev \
-        libgmp-dev \
-        libicu-dev \
-        procps \
+    git \
+    libonig-dev \
+    libwebp-dev \
+    libzip-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libfreetype6-dev \
+    libmcrypt-dev \
+    libssl-dev \
+    libgmp-dev \
+    libicu-dev \
+    procps \
 apt-get clean && \
 rm -rf /var/lib/apt/list/*
 
