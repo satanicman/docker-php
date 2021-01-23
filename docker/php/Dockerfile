@@ -12,7 +12,19 @@ RUN usermod -u 1000 ${WEB_USER} \
 
 RUN \
 apt-get update && \
-apt-get install -y git libonig-dev libwebp-dev libjpeg62-turbo-dev libpng-dev libfreetype6-dev libmcrypt-dev libssl-dev libgmp-dev libicu-dev procps && \
+&& apt-get install -y \
+        git \
+        libonig-dev \
+        libwebp-dev \
+        libzip-dev \
+        libjpeg62-turbo-dev \
+        libpng-dev \
+        libfreetype6-dev \
+        libmcrypt-dev \
+        libssl-dev \
+        libgmp-dev \
+        libicu-dev \
+        procps \
 apt-get clean && \
 rm -rf /var/lib/apt/list/*
 
@@ -29,8 +41,20 @@ docker-php-ext-configure opcache && \
 docker-php-ext-configure exif && \
 docker-php-ext-configure gmp && \
 docker-php-ext-configure bcmath && \
-docker-php-ext-configure intl && \
-docker-php-ext-install xdebug pdo_mysql mbstring sockets gd opcache exif gmp bcmath intl
+docker-php-ext-configure intl
+
+RUN \
+docker-php-ext-install xdebug && \
+docker-php-ext-install zip && \
+docker-php-ext-install pdo_mysql && \
+docker-php-ext-install mbstring && \
+docker-php-ext-install sockets && \
+docker-php-ext-install gd && \
+docker-php-ext-install opcache && \
+docker-php-ext-install exif && \
+docker-php-ext-install gmp && \
+docker-php-ext-install bcmath && \
+docker-php-ext-install intl
 
 RUN \
 mkdir -p ${HOME}/php-default-conf && \
