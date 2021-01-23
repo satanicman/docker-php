@@ -25,8 +25,8 @@ apt-get update && \
     libgmp-dev \
     libicu-dev \
     procps \
-apt-get clean && \
-rm -rf /var/lib/apt/list/*
+&& apt-get clean \
+&& rm -rf /var/lib/apt/list/*
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
